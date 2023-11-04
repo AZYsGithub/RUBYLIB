@@ -1317,60 +1317,6 @@ function module.NewTab(title, icon)
 		end)
 	end
 	
-	function self.NewSlider(title, max, func)
-		local newSlider = Reserved.Slider:Clone()
-
-		newSlider.Parent = newTab
-		newSlider.Visible = true
-		newSlider.Name = title
-
-		newSlider.MouseEnter:Connect(function()
-			local Fade = TweenService:Create(newSlider, TweenInfo.new(0.3), {BackgroundTransparency= 0})
-			Fade:Play()
-		end)
-		newSlider.MouseLeave:Connect(function()
-			local Fade = TweenService:Create(newSlider, TweenInfo.new(0.3), {BackgroundTransparency= 0.35})
-			Fade:Play()
-		end)
-
-		
-		local Mouse = LocalPlayer:GetMouse()
-		local tweenServ = TweenService
-
-		local Trigger = newSlider.Slider.Trigger
-		local Label = newSlider.Slider.Amount
-		local Fill = newSlider.Slider.Fill
-		local Parent = newSlider.Slider
-
-		local perc
-		local Percent
-		local MouseDown = false
-		local delayTw = 0.3
-
-		local function Update()
-			MouseDown = true
-			repeat
-				task.wait()
-				Percent = math.clamp((Mouse.X - Parent.AbsolutePosition.X) / Parent.AbsoluteSize.X, 0, 1)
-				perc = math.round(Percent * max)
-				
-				func(perc)
-				Label.Text = tostring(perc)
-				
-				local tween = tweenServ:Create(Fill, TweenInfo.new(delayTw, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.fromScale(Percent, 1) })
-				tween:Play()
-			until MouseDown == false
-		end
-
-		Trigger.MouseButton1Down:Connect(Update)
-
-		UserInputService.InputEnded:Connect(function(input)
-			if input.UserInputType ==  Enum.UserInputType.MouseButton1 or input.UserInputType ==  Enum.UserInputType.Touch then
-				MouseDown = false
-			end
-		end)
-		
-	end
 
 
     function self.NewSlider(name, min, max, inc, func)
@@ -1379,7 +1325,7 @@ function module.NewTab(title, icon)
 		newSlider.Parent = newTab
 		newSlider.Visible = true
 		newSlider.Name = title
-        newSlider.Slider.Fill.Text = tostring(min)
+        newSlider.Slider.Amount.Text = tostring(min)
 		newSlider.MouseEnter:Connect(function()
 			local Fade = TweenService:Create(newSlider, TweenInfo.new(0.3), {BackgroundTransparency= 0})
 			Fade:Play()
